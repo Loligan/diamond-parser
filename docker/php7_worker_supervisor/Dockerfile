@@ -1,4 +1,4 @@
-FROM all4bomtav2_php7:latest
+FROM diamondparser_php7:latest
 
 RUN apt-get install -y supervisor
 

@@ -47,7 +47,6 @@ class ServiceKamenItemPageObject
 
     private static function getCrumbs($html)
     {
-        print 'GET CRUMBS'.PHP_EOL;
         $crumbs = ConnectProcessor::findByXpath($html, self::BREAD_CRUMB);
         $textCrumbs = [];
         for ($i = 0; $i < $crumbs->length; $i++) {
@@ -61,7 +60,6 @@ class ServiceKamenItemPageObject
 
     private static function getTitle($html)
     {
-        print 'GET TITLE'.PHP_EOL;
         $title = ConnectProcessor::findByXpath($html, self::TITLE);
         if($title->length==0){
             return null;
@@ -73,7 +71,6 @@ class ServiceKamenItemPageObject
 
     private static function getArticle($html)
     {
-        print 'GET ARTICLE'.PHP_EOL;
         $article = ConnectProcessor::findByXpath($html, self::ARTICLE);
         if($article->length==0){
             return null;
@@ -85,7 +82,6 @@ class ServiceKamenItemPageObject
 
     private static function getBrand($html)
     {
-        print 'GET BRAND'.PHP_EOL;
         $article = ConnectProcessor::findByXpath($html, self::BRAND);
         if($article->length==0){
             return null;
@@ -97,7 +93,6 @@ class ServiceKamenItemPageObject
 
     private static function getPrice($html)
     {
-        print 'GET PRICE'.PHP_EOL;
         $article = ConnectProcessor::findByXpath($html, self::PRICE);
         if($article->length==0){
             return null;
@@ -109,7 +104,6 @@ class ServiceKamenItemPageObject
 
     private static function getCharacteristics($html)
     {
-        print 'getCharacteristics'.PHP_EOL;
         $names = self::getCharacteristicsNames($html);
         $values = self::getCharacteristicsValues($html);
         if(is_null($names) || is_null($values)){
@@ -124,7 +118,6 @@ class ServiceKamenItemPageObject
 
     private static function getCharacteristicsNames($html)
     {
-        print 'GET getCharacteristicsNames'.PHP_EOL;
         $names = [];
         $nodes = ConnectProcessor::findByXpath($html, self::CHARACTERISTICS_NAME);
         for ($i = 0; $i < $nodes->length; $i++) {
@@ -137,7 +130,6 @@ class ServiceKamenItemPageObject
 
     private static function getCharacteristicsValues($html)
     {
-        print 'GET getCharacteristicsValues'.PHP_EOL;
         $values = [];
         $nodes = ConnectProcessor::findByXpath($html, self::CHARACTERISTICS_VALUE);
         if($nodes->length==0){
@@ -156,7 +148,6 @@ class ServiceKamenItemPageObject
 
     private static function getImages($html)
     {
-        print 'GET IMAGES'.PHP_EOL;
         $links = [];
         $nodes = ConnectProcessor::findByXpath($html, self::IMAGES);
         for ($i = 0; $i < $nodes->length; $i++) {
@@ -169,14 +160,12 @@ class ServiceKamenItemPageObject
 
     private static function getDescription($html)
     {
-        print 'GET DESC'.PHP_EOL;
         return '';
     }
 
 
     private static function convertWords($text)
     {
-        print 'CONVERTER WORDS'.PHP_EOL;
         foreach (self::CONVERTER_WORD as $oldWord => $newWord) {
             $text = str_replace($oldWord, $newWord, $text);
         }
