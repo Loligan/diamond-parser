@@ -20,14 +20,15 @@ class ServiceKamenSubCategoryPageObject
      * @param $url
      * @return array
      */
-    public static function getAllLinks($url){
+    public static function getAllLinks($url)
+    {
         $html = ConnectProcessor::getHtml(ConnectProcessor::getOptions($url));
-        $elements = ConnectProcessor::findByXpath($html,self::LINKS_CATEGORY);
+        $elements = ConnectProcessor::findByXpath($html, self::LINKS_CATEGORY);
         $links = [];
-        for ($i=0;$i<$elements->length;$i++){
-            $links[]=[
-                'link'=>$elements->item($i)->getAttribute('href'),
-                'text_sub_category'=>$elements->item($i)->textContent
+        for ($i = 0; $i < $elements->length; $i++) {
+            $links[] = [
+                'link' => $elements->item($i)->getAttribute('href'),
+                'text_sub_category' => $elements->item($i)->textContent
             ];
         }
         return $links;

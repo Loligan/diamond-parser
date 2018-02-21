@@ -27,7 +27,7 @@ services:
   db:
     build: ./docker/mysql
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     environment:
       MYSQL_DATABASE: db
       MYSQL_USER: user

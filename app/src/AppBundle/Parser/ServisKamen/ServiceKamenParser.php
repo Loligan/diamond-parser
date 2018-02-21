@@ -107,5 +107,9 @@ class ServiceKamenParser extends Parser
         $this->getEntityManager()->flush();
     }
 
+    public function getDataFromItemPage($html){
+
+    }
+
 
 }
