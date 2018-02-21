@@ -30,6 +30,8 @@ class Item
     const CATEGORY_KRYGI_DLY_ZATOCHKI = 'KRYGI_DLY_ZATOCHKI';
     const CATEGORY_ELBOROVIE_KRUGI = 'ELBOROVIE_KRUGI';
 
+    const STAUS_PARSE_OK = 'OK';
+    const STAUS_PARSE_NOT_CATEGORY = 'NOT_CATEGORY';
     /**
      * @var int
      *
@@ -42,9 +44,32 @@ class Item
     /**
      * @var string
      *
-     * @ORM\Column(name="category", type="string")
+     * @ORM\Column(name="category", type="string",nullable=true)
      */
     private $category;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="data_info", type="text",nullable=true)
+     */
+    private $dataInfo;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status_parse", type="text",nullable=true)
+     */
+    private $statusParse;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="collector_info", type="text",nullable=true)
+     */
+    private $collectorInfo;
 
     /**
      * @var Page
@@ -64,5 +89,87 @@ class Item
     {
         return $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param string $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * @return Page
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param Page $page
+     */
+    public function setPage($page)
+    {
+        $this->page = $page;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataInfo()
+    {
+        return $this->dataInfo;
+    }
+
+    /**
+     * @param string $dataInfo
+     */
+    public function setDataInfo($dataInfo)
+    {
+        $this->dataInfo = $dataInfo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusParse()
+    {
+        return $this->statusParse;
+    }
+
+    /**
+     * @param string $statusParse
+     */
+    public function setStatusParse($statusParse)
+    {
+        $this->statusParse = $statusParse;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCollectorInfo()
+    {
+        return $this->collectorInfo;
+    }
+
+    /**
+     * @param string $collectorInfo
+     */
+    public function setCollectorInfo($collectorInfo)
+    {
+        $this->collectorInfo = $collectorInfo;
+    }
+
+
 }
 
