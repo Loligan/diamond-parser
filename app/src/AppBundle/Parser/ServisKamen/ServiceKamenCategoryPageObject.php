@@ -15,10 +15,9 @@ class ServiceKamenCategoryPageObject
 {
     const URL_CATEGORY = 'shop/almaznyy-instrument-dlya-obrabotki-kamnya/';
 
-    const LINKS_CATEGORY = './/div[./div[@class="shop_cat_img"]]/a';
+    const LINKS_CATEGORY = './/div[@class="shop_cat_img" or @class="shop_img shop-photo"]/a[./img]';
 
-    public static function getAllLinks(){
-        $html = ConnectProcessor::getHtml(ConnectProcessor::getOptions(ServiceKamenParser::URL.self::URL_CATEGORY));
+    public static function getAllLinks($html){
         $elements = ConnectProcessor::findByXpath($html,self::LINKS_CATEGORY);
         $links = [];
         for ($i=0;$i<$elements->length;$i++){
@@ -31,4 +30,11 @@ class ServiceKamenCategoryPageObject
         return $links;
     }
 
+    public static function checkIsCategoryPage($html){
+        $elements = ConnectProcessor::findByXpath($html,self::LINKS_CATEGORY);
+        if($elements->length==0){
+            return false;
+        }
+        return true;
+    }
 }

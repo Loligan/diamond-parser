@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <table class="ui selectable compact tiny celled table">
+        <thead>
+        <tr>
+            <th class="one wide">Id</th>
+            <th class="two wide">Category</th>
+            <th class="one wide">Status item</th>
+            <th class="one wide">Link in store</th>
+            <th class="seven wide">Data</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td><a name="{{ item.id }}" href="#{{ item.id }}">{{ item.id }}</a></td>
+                <td>{{ item.category }}</td>
+                <td>{{ item.statusParse }}</td>
+                <td><a href="{{ item.page.linkPage }}">open in store</a></td>
+                <td>
+                    <table class="ui tiny compact striped celled table">
+                        <tbody>
+
+                        {% for key,value in item.dataShow() %}
+                        <tr>
+                            <td class="positive">{{ key }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

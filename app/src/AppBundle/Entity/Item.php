@@ -171,5 +171,10 @@ class Item
     }
 
 
+    public function dataShow(){
+        return json_decode($this->collectorInfo,true);
+    }
+
+
 }
 

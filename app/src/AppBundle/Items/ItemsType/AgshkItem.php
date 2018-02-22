@@ -229,7 +229,41 @@ class AgshkItem
         $this->date_add = $date_add;
     }
 
+    public function compileToArray()
+    {
+        $arrData = [
+            'domain' => $this->domain,
+            'name' => $this->name,
+            'diameter' => $this->diameter,
+            'grit_agshk' => $this->grit_agshk,
+            'type_number' => $this->type_number,
+            'segments_height' => $this->segments_height,
+            'work_mode' => $this->work_mode,
+            'material' => $this->material,
+            'line' => $this->line,
+            'fasteners' => $this->fasteners,
+            'surface' => $this->surface,
+            'items_count' => $this->items_count,
+            'description' => $this->description,
+            'description_big' => $this->description_big,
+            'price' => $this->price,
+            'others' => $this->others,
+            'brand' => $this->brand,
+            'brand_country' => $this->brand_country,
+            'origin_country' => $this->origin_country,
+            'url' => $this->url,
+            'img_urls' => $this->img_urls,
+            'date_add' => $this->date_add
+        ];
+        $resultArray = [];
+        foreach ($arrData as $key => $value) {
+            if (!is_null($value) || trim($value)!='') {
+                $resultArray[$key] = $value;
+            }
+        }
+        return $resultArray;
 
+    }
 
 
 }

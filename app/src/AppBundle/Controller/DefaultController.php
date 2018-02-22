@@ -18,4 +18,14 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ]);
     }
+
+    /**
+    * @Route("/show", name="show")
+     */
+    public function showAction(Request $request){
+        $items = $this->getDoctrine()->getRepository('AppBundle:Item')->createQueryBuilder('x')->select('x')->where("x.category!='NO'")->andWhere('x.collectorInfo IS NOT NULL')->getQuery()->getResult();
+        return $this->render('parser/show.html.twig',[
+            'items'=>$items
+        ]);
+    }
 }

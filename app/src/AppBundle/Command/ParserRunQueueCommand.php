@@ -26,16 +26,16 @@ class ParserRunQueueCommand extends ContainerAwareCommand
     {
         $qr = $this->getContainer()->get('queue_runer');
 
-//        $qr->runQueue(new Queue(ServiceKamenParser::SERVICE_NAME, ServiceKamenParser::QUEUE_CATEGORY,json_encode(['fff'])));
+//        $qr->runQueue(new Queue(ServiceKamenParser::SERVICE_NAME, ServiceKamenParser::QUEUE_CATEGORY,json_encode(['link'=>'https://www.servis-kamen.ru/shop/almaznyy-instrument-dlya-obrabotki-kamnya/'])));
 //
-//        foreach ($queue = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
-//            ->findBy([
-//                'service' => ServiceKamenParser::SERVICE_NAME,
-//                'nameQueue' => ServiceKamenParser::QUEUE_SUB_CATEGORY,
-//                'status' => Queue::STATUS_IN_PROGRESS
-//            ]) as $queue) {
-//            $qr->runQueue($queue);
-//        }
+        foreach ($queue = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
+            ->findBy([
+                'service' => ServiceKamenParser::SERVICE_NAME,
+                'nameQueue' => ServiceKamenParser::QUEUE_CATEGORY,
+                'status' => Queue::STATUS_IN_PROGRESS
+            ]) as $queue) {
+            $qr->runQueue($queue);
+        }
 
 //        foreach ($queue = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
 //            ->findBy([
@@ -56,14 +56,14 @@ class ParserRunQueueCommand extends ContainerAwareCommand
 //            $qr->runQueue($queue);
 //        }
 
-        foreach ($queue = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
-            ->findBy([
-                'service' => ServiceKamenParser::SERVICE_NAME,
-                'nameQueue' => ServiceKamenParser::QUEUE_ITEMS_PAGE_HTML,
-                'status' => Queue::STATUS_IN_PROGRESS
-            ]) as $queue) {
-            $qr->runQueue($queue);
-        }
+//        foreach ($queue = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
+//            ->findBy([
+//                'service' => ServiceKamenParser::SERVICE_NAME,
+//                'nameQueue' => ServiceKamenParser::QUEUE_ITEMS_PAGE_HTML,
+//                'status' => Queue::STATUS_IN_PROGRESS
+//            ]) as $queue) {
+//            $qr->runQueue($queue);
+//        }
 
 
     }
