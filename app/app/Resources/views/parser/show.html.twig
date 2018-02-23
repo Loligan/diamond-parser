@@ -1,34 +1,109 @@
 {% extends 'base.html.twig' %}
+{% block styleshell %}
+    <style>
+        td.neutral {
+            background: rgba(255, 161, 17, 0.63) !important;
+            color: #ffffff !important;
+        }
 
+        td.arr_table {
+            background: rgba(255, 60, 101, 0.63) !important;
+            color: #ffffff !important;
+        }
+
+        td.arr_item {
+            background: rgba(188, 45, 75, 0.63) !important;
+            color: #ffffff !important;
+        }
+    </style>
+{% endblock %}
 {% block body %}
+    <div class="ui segment">
+        <ul class="ui list">
+       {% for stat in stats %}
+           <li>    <b>{{ stat.category }}</b>  :  {{ stat.cnt }}</li>
+       {% endfor %}
+        </ul>
+    </div>
+    <div class="ui form segment">
+    <div class="field">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+    </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-12">
+                <button type="submit" class="ui button">Filter</button>
+                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')) }}" class="ui button">Reset</a>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+    <div class="ui segment">
+        <table class="ui  table">
+            <tr>
+                <th>
+    {{ knp_pagination_render(pagination) }}
+                </th>
+                <th>
+            </tr>
+        </table>
+    </div>
+
     <table class="ui selectable compact tiny celled table">
         <thead>
         <tr>
             <th class="one wide">Id</th>
-            <th class="two wide">Category</th>
+            <th class="one wide">Category Api</th>
+            <th class="one wide">Category Site</th>
             <th class="one wide">Status item</th>
             <th class="one wide">Link in store</th>
-            <th class="seven wide">Data</th>
+            <th class="three wide">Data API</th>
+            <th class="three wide">Data page</th>
         </tr>
         </thead>
         <tbody>
-        {% for item in items %}
+        {% for item in pagination %}
             <tr>
                 <td><a name="{{ item.id }}" href="#{{ item.id }}">{{ item.id }}</a></td>
                 <td>{{ item.category }}</td>
+                <td>{{ item.categorySite }}</td>
                 <td>{{ item.statusParse }}</td>
-                <td><a href="{{ item.page.linkPage }}">open in store</a></td>
+                <td><a target="_blank" href="{{ item.page.linkPage }}">open in store</a></td>
                 <td>
                     <table class="ui tiny compact striped celled table">
                         <tbody>
-
-                        {% for key,value in item.dataShow() %}
-                        <tr>
-                            <td class="positive">{{ key }}</td>
-                            <td>{{ value }}</td>
-                        </tr>
-                            {% endfor %}
-
+                        {##}
+                        {% for key,value in item.dataCollectedShow() %}
+                            <tr>
+                                <td class="positive">{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+                        {% endfor %}
+                        {##}
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="ui tiny compact striped celled table">
+                        <tbody>
+                        {% for key,value in item.dataInfoShow() %}
+                            {% if value is iterable %}
+                                <tr>
+                                    <td class="arr_table" colspan="2"><b>{{ key }}</b></td>
+                                </tr>
+                                {% for key_2, value_2 in value %}
+                                    <tr>
+                                        <td class="arr_item">{{ key_2 }}</td>
+                                        <td class="arr_item">{{ value_2 }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td class="neutral"><b>{{ key }}</b></td>
+                                    <td class="neutral">{{ value }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
                         </tbody>
                     </table>
                 </td>

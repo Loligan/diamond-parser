@@ -12,23 +12,24 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Item
 {
-    const CATEGORY_PASTE = 'PASTA';
-    const CATEGORY_GOLOVKI = 'GOLOVKI';
-    const CATEGORY_BRUSKI = 'BRUSKI';
-    const CATEGORY_KANAT = 'KANAT';
-    const CATEGORY_KARANDASH = 'KARANDASH';
-    const CATEGORY_KORONKI_AND_SVERLA = 'KORONKI_AND_SVERLA';
-    const CATEGORY_NADFILI = 'NADFILI';
-    const CATEGORY_OTREZNIE_DISKI = 'OTREZNIE_DISKI';
-    const CATEGORY_PALCHIKOVIE_FREZI = 'PALCHIKOVIE_FREZI';
-    const CATEGORY_PROFILNIE_FREZI = 'PROFILNIE_FREZI';
-    const CATEGORY_SEGMENTI = 'SEGMENTI';
-    const CATEGORY_SHLIF_KRUGI = 'SHLIF_KRUGI';
-    const CATEGORY_SHLIF_FREZI = 'SHLIF_FREZI';
-    const CATEGORY_ALMAZ_V_OPRAVE = 'ALMAZ_V_OPRAVE';
-    const CATEGORY_IGLY = 'IGLY';
-    const CATEGORY_KRYGI_DLY_ZATOCHKI = 'KRYGI_DLY_ZATOCHKI';
-    const CATEGORY_ELBOROVIE_KRUGI = 'ELBOROVIE_KRUGI';
+    const CATEGORY_PASTE = 'Алмазная и эльборовая паста, ГОИ';
+    const CATEGORY_GOLOVKI = 'Алмазные головки';
+    const CATEGORY_BRUSKI = 'Алмазные и эльборовые бруски';
+    const CATEGORY_KANAT = 'Алмазные канаты';
+    const CATEGORY_KARANDASH = 'Алмазные карандаши';
+    const CATEGORY_KORONKI_AND_SVERLA = 'Алмазные коронки, Свёрла';
+    const CATEGORY_NADFILI = 'Алмазные надфили';
+    const CATEGORY_OTREZNIE_DISKI = 'Алмазные отрезные диски';
+    const CATEGORY_PALCHIKOVIE_FREZI = 'Алмазные пальчиковые фрезы';
+    const CATEGORY_PROFILNIE_FREZI = 'Алмазные профильные фрезы';
+    const CATEGORY_SEGMENTI = 'Алмазные сегменты';
+    const CATEGORY_SHLIF_KRUGI = 'Алмазные шлифовальные круги';
+    const CATEGORY_SHLIF_FREZI = 'Алмазные шлифовальные фрезы';
+    const CATEGORY_ALMAZ_V_OPRAVE = 'Алмазы в оправах';
+    const CATEGORY_IGLY = 'Иглы алмазные';
+    const CATEGORY_KRYGI_DLY_ZATOCHKI = 'Круги для заточки пил';
+    const CATEGORY_ELBOROVIE_KRUGI = 'Эльборовые круги';
+//        $items = $this->getDoctrine()->getRepository('AppBundle:Item')->createQueryBuilder('x')->select('x')->getQuery()->getResult();
 
     const STAUS_PARSE_OK = 'OK';
     const STAUS_PARSE_NOT_CATEGORY = 'NOT_CATEGORY';
@@ -47,6 +48,12 @@ class Item
      * @ORM\Column(name="category", type="string",nullable=true)
      */
     private $category;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="category_site", type="string",nullable=true)
+     */
+    private $categorySite;
 
     /**
      * @var string
@@ -171,8 +178,28 @@ class Item
     }
 
 
-    public function dataShow(){
+    public function dataCollectedShow(){
         return json_decode($this->collectorInfo,true);
+    }
+
+    public function dataInfoShow(){
+        return json_decode($this->dataInfo,true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategorySite()
+    {
+        return $this->categorySite;
+    }
+
+    /**
+     * @param string $categorySite
+     */
+    public function setCategorySite($categorySite)
+    {
+        $this->categorySite = $categorySite;
     }
 
 

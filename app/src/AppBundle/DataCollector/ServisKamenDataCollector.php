@@ -13,7 +13,9 @@ use AppBundle\Entity\Item;
 use AppBundle\Entity\Page;
 use AppBundle\Entity\Queue;
 use AppBundle\Items\ItemsType\AgshkItem;
+use AppBundle\Items\ItemsType\KanatyItem;
 use AppBundle\Items\ItemsType\KoronkiItem;
+use AppBundle\Items\ItemsType\KrugiShlifovalnyeItem;
 
 class ServisKamenDataCollector extends DataCollector
 {
@@ -87,7 +89,7 @@ class ServisKamenDataCollector extends DataCollector
 
     public function updateData(Page $page, array $data)
     {
-        print 'ID: ' . $page->getId() . PHP_EOL;
+        print 'PAGE ID: ' . $page->getId() . PHP_EOL;
         $item = $this->getDoctrine()->getRepository('AppBundle:Item');
         $item = $item->findOneBy(['page' => $page]);
         if (is_null($item)) {
@@ -95,11 +97,17 @@ class ServisKamenDataCollector extends DataCollector
             $item->setPage($page);
 
         }
+        print 'ITEM ID: '.$item->getId().PHP_EOL;
         $item->setStatusParse(Item::STAUS_PARSE_OK);
         $item->setCollectorInfo(null);
-        $catalogCategory = $this->getCatalogCategory($data["crumbs"]);
-        $item->setCategory($catalogCategory);
-        if (is_null($catalogCategory)) {
+        $item->setDataInfo(null);
+
+        $categoryInfo = $this->getCatalogCategory($data["crumbs"]);
+        $catalogCategory = $categoryInfo['category'];
+        $item->setCategory($categoryInfo['category']);
+        $item->setDataInfo(json_encode($data));
+        $item->setCategorySite($categoryInfo['category_site']);
+        if ($catalogCategory=='NO') {
             $item->setStatusParse(Item::STAUS_PARSE_NOT_CATEGORY);
         }
 
@@ -110,8 +118,14 @@ class ServisKamenDataCollector extends DataCollector
             case 'Алмазные коронки, Свёрла':
                 $item->setCollectorInfo(json_encode($this->collectorKoronki($data, $page)));
                 break;
+            case 'Алмазные канаты':
+                $item->setCollectorInfo(json_encode($this->collectorKanati($data, $page)));
+                break;
+            case 'Алмазные шлифовальные круги':
+                $item->setCollectorInfo(json_encode($this->collecotrKrugiShlifovalnye($data, $page)));
+                break;
             default:
-                print 'nope' . PHP_EOL;
+                print '== Такой категории нет для обработки данных ==' . PHP_EOL;
         }
 
         $this->getDoctrine()->getManager()->merge($item);
@@ -125,14 +139,18 @@ class ServisKamenDataCollector extends DataCollector
             return null;
         }
         foreach ($breadcrumbs as $breadcrumb) {
-            if (key_exists($breadcrumb, self::CRUMBS_CATEGORY)) {
-                return self::CRUMBS_CATEGORY[$breadcrumb];
+            if (key_exists(trim($breadcrumb), self::CRUMBS_CATEGORY)) {
+                return
+                    [
+                        'category'=>self::CRUMBS_CATEGORY[$breadcrumb],
+                        'category_site'=>$breadcrumb
+                    ];
             }
         }
         return null;
     }
 
-    private function collectorAgshk($data, $url)
+    private function collectorAgshk($data, Page $page)
     {
         $handleName = $this->handleAgshkAdditionalInfo($data);
 
@@ -169,7 +187,7 @@ class ServisKamenDataCollector extends DataCollector
             $material = 'камень';
         }
 
-        $item = new AgshkItem(self::DOMAIN, $nameItem, $diameter, $price, $url, 'date_add');
+        $item = new AgshkItem(self::DOMAIN, $nameItem, $diameter, $price, $page->getLinkPage(), 'date_add');
         $item->setGritAgshk($grit_agshk);
         $item->setBrand($brand);
         $item->setWorkMode($work_mode);
@@ -178,16 +196,15 @@ class ServisKamenDataCollector extends DataCollector
         $item->setBrandCountry($coutry_brand);
         $item->setMaterial($material);
         $ca = $item->compileToArray();
+        var_dump($ca);
         return $ca;
     }
 
     private function collectorKoronki($data, Page $page)
     {
-
         $handleInfo = $this->handleKoronkiInfo($data);
         $images = $handleInfo['images'];
         $work_mode = null;
-//        var_dump($data);
         $item = new KoronkiItem(
             self::DOMAIN,
             $handleInfo['name_item'],
@@ -196,7 +213,7 @@ class ServisKamenDataCollector extends DataCollector
             $data['characteristics']['Тип крепления'],
             'камень',
             $handleInfo['price'],
-            $url,
+            $page->getLinkPage(),
             'date_add'
         );
 
@@ -209,6 +226,110 @@ class ServisKamenDataCollector extends DataCollector
         $item->setImgUrls($images);
         $ca = $item->compileToArray();
         return $ca;
+    }
+
+    private function collectorKanati($data, Page $page)
+    {
+
+        $handleInfo = $this->handleKanatiInfo($data);
+        $images = $handleInfo['images'];
+        $work_mode = null;
+        $item = new KanatyItem(
+            self::DOMAIN,
+            $handleInfo['name_item'],
+            $handleInfo['price'],
+            $page->getLinkPage(),
+            date('Y-m-d')
+        );
+
+        $item->setMaterial('камень');
+        $item->setImgUrls($images);
+        $item->setBrandCountry($handleInfo['country_brand']);
+        $item->setBrand($handleInfo['brand']);
+        $ca = $item->compileToArray();
+        return $ca;
+    }
+
+    private function collecotrKrugiShlifovalnye($data, Page $page){
+        $handleInfo = $this->handleKrugiShlifovalnyeInfo($data);
+        $images = $handleInfo['images'];
+        $work_mode = null;
+        $item = new KrugiShlifovalnyeItem(
+            self::DOMAIN,
+            $handleInfo['name_item'],
+            'profile',
+            $data['characteristics']['Диаметр'],
+            'bore',
+            'камень',
+            $handleInfo['price'],
+            $page->getLinkPage(),
+            date('Y-m-d')
+        );
+
+        $item->setMaterial('камень');
+        $item->setImgUrls($images);
+        $item->setBrandCountry($handleInfo['country_brand']);
+        $item->setBrand($handleInfo['brand']);
+        $ca = $item->compileToArray();
+        return $ca;
+    }
+
+    private function handleKrugiShlifovalnyeInfo($data)
+    {
+        $handleData = [
+            'name_item'=>$data['title'],
+            'images' => null,
+            'price' => null,
+            'country_brand'=>null,
+            'brand'=>null,
+        ];
+
+        $handleData['price'] = str_replace(' ', '', $data['price']);
+        foreach ($data['images'] as $img) {
+            $handleData['images'] .= $img . ';';
+        }
+
+        if (in_array($data['brand'], self::COUNTRY_BRAND)) {
+            $handleData['country_brand'] = $data['brand'];
+            $handleData['brand'] = $data['brand'];
+        } else {
+            if (preg_match('~\((.*)\)~', $data['brand'], $result)) {
+                $handleData['country_brand'] = $result[1];
+                $handleData['brand'] = trim(preg_replace('~\(.*\)~', '', $data['brand']));
+
+            }
+        }
+        $handleData['price'] = str_replace(' ', '', $data['price']);
+        return $handleData;
+    }
+
+    private function handleKanatiInfo($data)
+    {
+        $handleData = [
+            'name_item'=>$data['title'],
+            'images' => null,
+            'price' => null,
+            'country_brand'=>null,
+            'brand'=>null,
+        ];
+
+        $handleData['price'] = str_replace(' ', '', $data['price']);
+        foreach ($data['images'] as $img) {
+            $handleData['images'] .= $img . ';';
+        }
+
+        if (in_array($data['brand'], self::COUNTRY_BRAND)) {
+            $handleData['country_brand'] = $data['brand'];
+            $handleData['brand'] = $data['brand'];
+        } else {
+            if (preg_match('~\((.*)\)~', $data['brand'], $result)) {
+                $handleData['country_brand'] = $result[1];
+                $handleData['brand'] = trim(preg_replace('~\(.*\)~', '', $data['brand']));
+
+            }
+        }
+        $handleData['price'] = str_replace(' ', '', $data['price']);
+        return $handleData;
     }
 
     private function handleKoronkiInfo($data)
