@@ -254,5 +254,41 @@ class KanatyItem
         $this->date_add = $date_add;
     }
 
+    public function compileToArray(){
+        $arrData = [
+        'domain'=>$this->domain,
+        'name'=>$this->name,
+        'segment_diameter'=>$this->segment_diameter,
+        'material'=>$this->material,
+        'segments_quantity'=>$this->segments_quantity,
+        'segment_height'=>$this->segment_height,
+        'segment_length'=>$this->segment_length,
+        'diamond_powder'=>$this->diamond_powder,
+        'diamond_concentration'=>$this->diamond_concentration,
+        'diamond_carat'=>$this->diamond_carat,
+        'diamond_bunch'=>$this->diamond_bunch,
+        'grit_mkm'=>$this->grit_mkm,
+        'grit_mesh'=>$this->grit_mesh,
+        'grit_grit'=>$this->grit_grit,
+        'grit_astm'=>$this->grit_astm,
+        'description'=>$this->description,
+        'description_big'=>$this->description_big,
+        'price'=>$this->price,
+        'others'=>$this->others,
+        'brand'=>$this->brand,
+        'brand_country'=>$this->brand_country,
+        'origin_country'=>$this->origin_country,
+        'url'=>$this->url,
+        'img_urls'=>$this->img_urls,
+        'date_add'=>$this->date_add,
+        ];
+        $resultArray = [];
+        foreach ($arrData as $key => $value) {
+            if (!is_null($value) || trim($value) != '') {
+                $resultArray[$key] = $value;
+            }
+        }
+        return $resultArray;
+    }
 
 }

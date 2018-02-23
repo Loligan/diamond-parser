@@ -21,7 +21,8 @@ class ServiceKamenItemPageObject
     const PRICE = './/span[@summ]';
     const CHARACTERISTICS_NAME = './/div[@class="shop-item-info1"]//strong[@class]';
     const CHARACTERISTICS_VALUE = './/div[@class="shop-item-info1"]';
-    const DESCRIPTION = './/div[@id="home"]';
+    const ADDITIONAL_INFORMATION = './/div[@role="tabpanel" and @class="tab-pane active"]';
+    const DESCRIPTION = './/*[@class="shop_text"]/p';
 
 
     const IGNORE_CRUMBS = ['Главная', 'Продукция'];
@@ -41,9 +42,12 @@ class ServiceKamenItemPageObject
             'price' => self::getPrice($html),
             'characteristics' => self::getCharacteristics($html),
             'images' => self::getImages($html),
+            'additional_information' => self::getAdditionalInformation($html),
             'description' => self::getDescription($html),
         ];
     }
+
+
 
     private static function getCrumbs($html)
     {
@@ -61,7 +65,7 @@ class ServiceKamenItemPageObject
     private static function getTitle($html)
     {
         $title = ConnectProcessor::findByXpath($html, self::TITLE);
-        if($title->length==0){
+        if ($title->length == 0) {
             return null;
         }
         $text = $title->item(0)->textContent;
@@ -72,7 +76,7 @@ class ServiceKamenItemPageObject
     private static function getArticle($html)
     {
         $article = ConnectProcessor::findByXpath($html, self::ARTICLE);
-        if($article->length==0){
+        if ($article->length == 0) {
             return null;
         }
         $text = $article->item(0)->textContent;
@@ -83,7 +87,7 @@ class ServiceKamenItemPageObject
     private static function getBrand($html)
     {
         $article = ConnectProcessor::findByXpath($html, self::BRAND);
-        if($article->length==0){
+        if ($article->length == 0) {
             return null;
         }
         $text = $article->item(0)->textContent;
@@ -94,7 +98,7 @@ class ServiceKamenItemPageObject
     private static function getPrice($html)
     {
         $article = ConnectProcessor::findByXpath($html, self::PRICE);
-        if($article->length==0){
+        if ($article->length == 0) {
             return null;
         }
         $text = $article->item(0)->textContent;
@@ -106,7 +110,7 @@ class ServiceKamenItemPageObject
     {
         $names = self::getCharacteristicsNames($html);
         $values = self::getCharacteristicsValues($html);
-        if(is_null($names) || is_null($values)){
+        if (is_null($names) || is_null($values)) {
             return null;
         }
         $compileData = [];
@@ -132,7 +136,7 @@ class ServiceKamenItemPageObject
     {
         $values = [];
         $nodes = ConnectProcessor::findByXpath($html, self::CHARACTERISTICS_VALUE);
-        if($nodes->length==0){
+        if ($nodes->length == 0) {
             return null;
         }
         for ($i = 0; $i < $nodes->item(0)->childNodes->length; $i++) {
@@ -158,9 +162,28 @@ class ServiceKamenItemPageObject
         return $links;
     }
 
+    private static function getAdditionalInformation($html)
+    {
+        $aInformation = '';
+        $nodes = ConnectProcessor::findByXpath($html, self::ADDITIONAL_INFORMATION);
+        if ($nodes->length != 0) {
+            $aInformation = $nodes->item(0)->ownerDocument->saveHTML($nodes->item(0));
+        }
+        return $aInformation;
+    }
+
+
     private static function getDescription($html)
     {
-        return '';
+        $descriptionInformation = [];
+        $nodes = ConnectProcessor::findByXpath($html, self::DESCRIPTION);
+        for ($i = 0; $i < $nodes->length; $i++) {
+            $descriptionInformation[] = $nodes->item($i)->textContent;
+        }
+        if(count($descriptionInformation)==0){
+            return null;
+        }
+        return $descriptionInformation;
     }
 
 
@@ -171,6 +194,5 @@ class ServiceKamenItemPageObject
         }
         return trim($text);
     }
-
 
 }

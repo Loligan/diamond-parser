@@ -277,5 +277,96 @@ class KrugiShlifovalnyeItem
         $this->others = $others;
     }
 
+    /**
+     * @param mixed $brand
+     */
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
+    }
+
+    /**
+     * @param mixed $brand_country
+     */
+    public function setBrandCountry($brand_country)
+    {
+        $this->brand_country = $brand_country;
+    }
+
+    /**
+     * @param mixed $origin_country
+     */
+    public function setOriginCountry($origin_country)
+    {
+        $this->origin_country = $origin_country;
+    }
+
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * @param mixed $img_urls
+     */
+    public function setImgUrls($img_urls)
+    {
+        $this->img_urls = $img_urls;
+    }
+
+    /**
+     * @param mixed $date_add
+     */
+    public function setDateAdd($date_add)
+    {
+        $this->date_add = $date_add;
+    }
+
+    public function compileToArray(){
+        $arrData = [
+        'domain'=>$this->domain,                     // Домен поставщика
+        'name'=>$this->name,                       // Наименование
+        'profile'=>$this->profile,                    // Профиль круга
+        'diameter'=>$this->diameter,                   // Внешний диаметр, мм
+        'bore'=>$this->bore,                       // Посадка, мм
+        'width'=>$this->width,                      // Ширина корпуса, мм
+        'layer_height'=>$this->layer_height,               // Высота рабочего слоя, мм
+        'layer_width'=>$this->layer_width,                // Ширина рабочего слоя, мм
+        'layer_thickness'=>$this->layer_thickness,            // Толщина рабочего слоя, мм
+        'layer_radius'=>$this->layer_radius,               // Радиус рабочей части, мм
+        'layer_corner'=>$this->layer_corner,               // Угол рабочей части, град
+        'material'=>$this->material,                   // Обрабатываемый материал
+        'weight'=>$this->weight,                     // Вес, г
+        'resource'=>$this->resource,                   // Ресурс, м²
+        'diamond_powder'=>$this->diamond_powder,             // Марка алмазного порошка
+        'diamond_concentration'=>$this->diamond_concentration,      // Концентрация алмазов
+        'diamond_carat'=>$this->diamond_carat,              // Масса алмазов, карат
+        'diamond_bunch'=>$this->diamond_bunch,              // Связка
+        'grit_mkm'=>$this->grit_mkm,                   // Зернистость, мкм
+        'grit_mesh'=>$this->grit_mesh,                  // Зернистость, MESH
+        'grit_grit'=>$this->grit_grit,                  // Зернистость, grit
+        'grit_astm'=>$this->grit_astm,                  // Зернистость, ASTM
+        'description'=>$this->description,                // Характеристики
+        'description_big'=>$this->description_big,            // Описание товара
+        'price'=>$this->price,                      // Цена
+        'others'=>$this->others,                     // Другие параметры
+        'brand'=>$this->brand,                      // Производитель
+        'brand_country'=>$this->brand_country,              // Страна бренда
+        'origin_country'=>$this->origin_country,             // Страна производства
+        'url'=>$this->url,                        // URL страницы товара
+        'img_urls'=>$this->img_urls,                   // Ссылки на изображения
+        'date_add'=>$this->date_add,
+];
+        $resultArray = [];
+        foreach ($arrData as $key => $value) {
+            if (!is_null($value) || trim($value)!='') {
+                $resultArray[$key] = $value;
+            }
+        }
+        return $resultArray;
+    }
 
 }
