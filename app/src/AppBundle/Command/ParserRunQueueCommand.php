@@ -28,42 +28,21 @@ class ParserRunQueueCommand extends ContainerAwareCommand
 
 //        $qr->runQueue(new Queue(ServiceKamenParser::SERVICE_NAME, ServiceKamenParser::QUEUE_CATEGORY,json_encode(['link'=>'https://www.servis-kamen.ru/shop/almaznyy-instrument-dlya-obrabotki-kamnya/'])));
 //
-        foreach ($queue = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
+        while (true){
+        $queues = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
             ->findBy([
                 'service' => ServiceKamenParser::SERVICE_NAME,
                 'nameQueue' => ServiceKamenParser::QUEUE_CATEGORY,
                 'status' => Queue::STATUS_IN_PROGRESS
-            ]) as $queue) {
+            ]);
+        if(count($queues)==0){
+            break;
+        }
+        foreach ($queues as $queue) {
             $qr->runQueue($queue);
         }
+        }
 
-//        foreach ($queue = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
-//            ->findBy([
-//                'service' => ServiceKamenParser::SERVICE_NAME,
-//                'nameQueue' => ServiceKamenParser::QUEUE_LIST_SUB_SUB_CATEGORIES,
-//                'status' => Queue::STATUS_IN_PROGRESS
-//            ]) as $queue) {
-//            $qr->runQueue($queue);
-//        }
-
-
-//        foreach ($queue = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
-//            ->findBy([
-//                'service' => ServiceKamenParser::SERVICE_NAME,
-//                'nameQueue' => ServiceKamenParser::QUEUE_LIST_ITEMS,
-//                'status' => Queue::STATUS_IN_PROGRESS
-//            ]) as $queue) {
-//            $qr->runQueue($queue);
-//        }
-
-//        foreach ($queue = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Queue')
-//            ->findBy([
-//                'service' => ServiceKamenParser::SERVICE_NAME,
-//                'nameQueue' => ServiceKamenParser::QUEUE_ITEMS_PAGE_HTML,
-//                'status' => Queue::STATUS_IN_PROGRESS
-//            ]) as $queue) {
-//            $qr->runQueue($queue);
-//        }
 
 
     }

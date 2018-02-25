@@ -42,6 +42,7 @@ class ItemFilterType extends AbstractType
             'choices' => [
                 '-------' => null,
                 Item::CATEGORY_PASTE => Item::CATEGORY_PASTE,
+                Item::CATEGORY_GIBKIE_KRUGI => Item::CATEGORY_GIBKIE_KRUGI,
                 Item::CATEGORY_GOLOVKI => Item::CATEGORY_GOLOVKI,
                 Item::CATEGORY_BRUSKI => Item::CATEGORY_BRUSKI,
                 Item::CATEGORY_KANAT => Item::CATEGORY_KANAT,

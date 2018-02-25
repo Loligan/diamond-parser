@@ -71,3 +71,9 @@ knp_paginator:
     page_range: 12
     template:
         pagination: '@KnpPaginator/Pagination/semantic_ui_pagination.html.twig'     # sliding pagination controls template
+
+doctrine_migrations:
+    name: People Center app migrations
+    namespace: AppBundle\Migrations
+    table_name: migrations
+    dir_name: %kernel.root_dir%/../src/AppBundle/Migrations

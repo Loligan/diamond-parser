@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Item
 {
     const CATEGORY_PASTE = 'Алмазная и эльборовая паста, ГОИ';
+    const CATEGORY_GIBKIE_KRUGI = 'Алмазные гибкие шлифовальные круги';
     const CATEGORY_GOLOVKI = 'Алмазные головки';
     const CATEGORY_BRUSKI = 'Алмазные и эльборовые бруски';
     const CATEGORY_KANAT = 'Алмазные канаты';

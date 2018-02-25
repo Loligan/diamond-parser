@@ -28,18 +28,18 @@ class ServisKamenDataCollector extends DataCollector
     CONST SUPPLIER_PHONES = '+7 (499) 551-77-52 +7 (495) 655-20-68 (69, 70, 71, 72)';
     CONST SUPPLIER_EMAILS = 'info@sk-group.pro';
     CONST COUNTRY_BRAND = [
-        'Белоруссия',
-        'Болгария',
-        'Германия',
-        'Испания',
-        'Италия',
-        'Китай',
-        'Корея',
-        'Польша',
-        'Россия',
-        'Румыния',
-        'Украина',
-        'Япония'
+        "Белоруссия",
+        "Болгария",
+        "Германия",
+        "Испания",
+        "Италия",
+        "Китай",
+        "Корея",
+        "Польша",
+        "Россия",
+        "Румыния",
+        "Украина",
+        "Япония"
     ];
     CONST SUPPLIER_LOGO = 'https://www.servis-kamen.ru/custom/my/img/logo.png';
     CONST SUPPLIER_ABOUT = 'Компания была основана в 2000 году с целью обеспечения покупателей доступным оборудованием, качественными инструментами и химическими средствами для обработки камня. Для этого фирма создала прямые связи с лучшими российскими и зарубежными производителями.
@@ -368,12 +368,10 @@ class ServisKamenDataCollector extends DataCollector
             if (preg_match('~\((.*)\)~', $data['brand'], $result)) {
                 $handleData['country_brand'] = $result[1];
                 $handleData['brand'] = trim(preg_replace('~\(.*\)~', '', $data['brand']));
-
             }
         }
         $handleData['price'] = str_replace(' ', '', $data['price']);
         return $handleData;
     }
-
 
 }
