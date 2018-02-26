@@ -28,7 +28,6 @@ class ggCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dctr = $this->getContainer()->get('doctrine');
-//        $gg = $dctr->getRepository('AppBundle:Page')->findBy(['id'=>1741],[],10,0);
         $gg = $dctr->getRepository('AppBundle:Page')->findAll();
         foreach ($gg as $item){
             $this->updateData($item);

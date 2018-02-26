@@ -32,8 +32,9 @@ class ItemFilterType extends AbstractType
         $builder->add('statusParse', ChoiceType::class, [
             'choices' => [
                 '-------' => null,
-                Item::STAUS_PARSE_OK => Item::STAUS_PARSE_OK,
-                Item::STAUS_PARSE_NOT_CATEGORY => Item::STAUS_PARSE_NOT_CATEGORY
+                Item::STATUS_PARSE_OK => Item::STATUS_PARSE_OK,
+                Item::STATUS_PARSE_NOT_CATEGORY => Item::STATUS_PARSE_NOT_CATEGORY,
+                Item::STATUS_PARSE_NOT_BASE_ELEMENT => Item::STATUS_PARSE_NOT_BASE_ELEMENT
             ],
             'required' => false,
         ]);

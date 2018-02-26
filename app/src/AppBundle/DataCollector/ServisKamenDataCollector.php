@@ -87,6 +87,7 @@ class ServisKamenDataCollector extends DataCollector
         'Полировальный порошок' => 'NO',
     ];
 
+    private $status = 'OK';
     public function updateData(Page $page, array $data)
     {
         print 'PAGE ID: ' . $page->getId() . PHP_EOL;
@@ -98,7 +99,7 @@ class ServisKamenDataCollector extends DataCollector
 
         }
         print 'ITEM ID: '.$item->getId().PHP_EOL;
-        $item->setStatusParse(Item::STAUS_PARSE_OK);
+        $item->setStatusParse(Item::STATUS_PARSE_OK);
         $item->setCollectorInfo(null);
         $item->setDataInfo(null);
 
@@ -106,9 +107,18 @@ class ServisKamenDataCollector extends DataCollector
         $catalogCategory = $categoryInfo['category'];
         $item->setCategory($categoryInfo['category']);
         $item->setDataInfo(json_encode($data));
+        if(
+            count($data['crumbs'])==0 ||
+            $data['title']==null ||
+            $data['brand']==null
+        ){
+            $this->status = Item::STATUS_PARSE_NOT_BASE_ELEMENT;
+        }
+
+
         $item->setCategorySite($categoryInfo['category_site']);
         if ($catalogCategory=='NO') {
-            $item->setStatusParse(Item::STAUS_PARSE_NOT_CATEGORY);
+            $this->status = Item::STATUS_PARSE_NOT_CATEGORY;
         }
 
         switch ($catalogCategory) {
@@ -127,7 +137,7 @@ class ServisKamenDataCollector extends DataCollector
             default:
                 print '== Такой категории нет для обработки данных ==' . PHP_EOL;
         }
-
+        $item->setStatusParse($this->status);
         $this->getDoctrine()->getManager()->merge($item);
         $this->getDoctrine()->getManager()->flush();
     }

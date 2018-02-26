@@ -32,8 +32,9 @@ class Item
     const CATEGORY_ELBOROVIE_KRUGI = 'Эльборовые круги';
 //        $items = $this->getDoctrine()->getRepository('AppBundle:Item')->createQueryBuilder('x')->select('x')->getQuery()->getResult();
 
-    const STAUS_PARSE_OK = 'OK';
-    const STAUS_PARSE_NOT_CATEGORY = 'NOT_CATEGORY';
+    const STATUS_PARSE_OK = 'OK';
+    const STATUS_PARSE_NOT_CATEGORY = 'NOT_CATEGORY';
+    const STATUS_PARSE_NOT_BASE_ELEMENT = 'NOT_BASE_ELEMENT';
     /**
      * @var int
      *
