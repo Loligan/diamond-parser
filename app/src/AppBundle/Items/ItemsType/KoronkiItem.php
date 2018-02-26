@@ -398,6 +398,19 @@ class KoronkiItem
                 $resultArray[$key] = $value;
             }
         }
+
+        if (!key_exists('domain', $resultArray) ||
+            !key_exists('name', $resultArray) ||
+            !key_exists('edge_type', $resultArray) ||
+            !key_exists('diameter', $resultArray) ||
+            !key_exists('shank', $resultArray) ||
+            !key_exists('material', $resultArray) ||
+            !key_exists('price', $resultArray) ||
+            !key_exists('url', $resultArray) ||
+            !key_exists('name', $resultArray)
+        ) {
+            return null;
+        }
         return $resultArray;
 
     }

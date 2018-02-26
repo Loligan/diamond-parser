@@ -34,7 +34,8 @@ class ItemFilterType extends AbstractType
                 '-------' => null,
                 Item::STATUS_PARSE_OK => Item::STATUS_PARSE_OK,
                 Item::STATUS_PARSE_NOT_CATEGORY => Item::STATUS_PARSE_NOT_CATEGORY,
-                Item::STATUS_PARSE_NOT_BASE_ELEMENT => Item::STATUS_PARSE_NOT_BASE_ELEMENT
+                Item::STATUS_PARSE_NOT_BASE_ELEMENT => Item::STATUS_PARSE_NOT_BASE_ELEMENT,
+                Item::STATUS_PARSE_NOT_REQUIRED_FIELD => Item::STATUS_PARSE_NOT_REQUIRED_FIELD
             ],
             'required' => false,
         ]);

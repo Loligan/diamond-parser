@@ -197,7 +197,7 @@ class ServisKamenDataCollector extends DataCollector
             $material = 'камень';
         }
 
-        $item = new AgshkItem(self::DOMAIN, $nameItem, $diameter, $price, $page->getLinkPage(), 'date_add');
+        $item = new AgshkItem(self::DOMAIN, $nameItem, $diameter, $price, $page->getLinkPage(),  date('Y-m-d'));
         $item->setGritAgshk($grit_agshk);
         $item->setBrand($brand);
         $item->setWorkMode($work_mode);
@@ -206,6 +206,9 @@ class ServisKamenDataCollector extends DataCollector
         $item->setBrandCountry($coutry_brand);
         $item->setMaterial($material);
         $ca = $item->compileToArray();
+        if($ca==null){
+            $this->status=Item::STATUS_PARSE_NOT_REQUIRED_FIELD;
+        }
         var_dump($ca);
         return $ca;
     }
@@ -224,7 +227,7 @@ class ServisKamenDataCollector extends DataCollector
             'камень',
             $handleInfo['price'],
             $page->getLinkPage(),
-            'date_add'
+            date('Y-m-d')
         );
 
         if ($data['characteristics']['Тип работы'] == 'с водой') {
@@ -235,6 +238,9 @@ class ServisKamenDataCollector extends DataCollector
         $item->setWorkMode($work_mode);
         $item->setImgUrls($images);
         $ca = $item->compileToArray();
+        if($ca==null){
+            $this->status=Item::STATUS_PARSE_NOT_REQUIRED_FIELD;
+        }
         return $ca;
     }
 
@@ -257,6 +263,9 @@ class ServisKamenDataCollector extends DataCollector
         $item->setBrandCountry($handleInfo['country_brand']);
         $item->setBrand($handleInfo['brand']);
         $ca = $item->compileToArray();
+        if($ca==null){
+            $this->status=Item::STATUS_PARSE_NOT_REQUIRED_FIELD;
+        }
         return $ca;
     }
 
@@ -276,11 +285,13 @@ class ServisKamenDataCollector extends DataCollector
             date('Y-m-d')
         );
 
-        $item->setMaterial('камень');
         $item->setImgUrls($images);
         $item->setBrandCountry($handleInfo['country_brand']);
         $item->setBrand($handleInfo['brand']);
         $ca = $item->compileToArray();
+        if($ca==null){
+            $this->status=Item::STATUS_PARSE_NOT_REQUIRED_FIELD;
+        }
         return $ca;
     }
 
@@ -347,8 +358,20 @@ class ServisKamenDataCollector extends DataCollector
         $handleData = [
             'name_item' => null,
             'images' => null,
-            'price' => null
+            'price' => null,
+            'country_brand'=>null,
+            'brand'=>null,
         ];
+
+        if (in_array($data['brand'], self::COUNTRY_BRAND)) {
+            $handleData['country_brand'] = $data['brand'];
+            $handleData['brand'] = $data['brand'];
+        } else {
+            if (preg_match('~\((.*)\)~', $data['brand'], $result)) {
+                $handleData['country_brand'] = $result[1];
+                $handleData['brand'] = trim(preg_replace('~\(.*\)~', '', $data['brand']));
+            }
+        }
         foreach ($data['crumbs'] as $crumb) {
             if (preg_match('~Алмазные коронки..*$~', $crumb)) {
                 $handleData['name_item'] = trim(str_replace('Алмазные коронки', '', $crumb));
@@ -359,7 +382,9 @@ class ServisKamenDataCollector extends DataCollector
         foreach ($data['images'] as $img) {
             $handleData['images'] .= $img . ';';
         }
+
         $handleData['price'] = str_replace(' ', '', $data['price']);
+
         return $handleData;
     }
 

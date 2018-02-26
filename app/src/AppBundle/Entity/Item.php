@@ -35,6 +35,7 @@ class Item
     const STATUS_PARSE_OK = 'OK';
     const STATUS_PARSE_NOT_CATEGORY = 'NOT_CATEGORY';
     const STATUS_PARSE_NOT_BASE_ELEMENT = 'NOT_BASE_ELEMENT';
+    const STATUS_PARSE_NOT_REQUIRED_FIELD = 'NOT_REQUIRED_FIELD';
     /**
      * @var int
      *

@@ -288,6 +288,14 @@ class KanatyItem
                 $resultArray[$key] = $value;
             }
         }
+        if (!key_exists('domain', $resultArray) ||
+            !key_exists('name', $resultArray) ||
+            !key_exists('price', $resultArray) ||
+            !key_exists('url', $resultArray) ||
+            !key_exists('name', $resultArray)
+        ) {
+            return null;
+        }
         return $resultArray;
     }
 

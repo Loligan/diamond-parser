@@ -366,6 +366,18 @@ class KrugiShlifovalnyeItem
                 $resultArray[$key] = $value;
             }
         }
+        if (!key_exists('domain', $resultArray) ||
+            !key_exists('name', $resultArray) ||
+            !key_exists('profile', $resultArray) ||
+            !key_exists('diameter', $resultArray) ||
+            !key_exists('bore', $resultArray) ||
+            !key_exists('material', $resultArray) ||
+            !key_exists('price', $resultArray) ||
+            !key_exists('url', $resultArray) ||
+            !key_exists('name', $resultArray)
+        ) {
+            return null;
+        }
         return $resultArray;
     }
 
