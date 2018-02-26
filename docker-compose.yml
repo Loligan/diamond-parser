@@ -9,7 +9,7 @@ services:
     volumes:
       - ./app:/var/www
     ports:
-      - "80:80"
+      - "8000:80"
   php7:
     build: ./docker/php7
     ports:
