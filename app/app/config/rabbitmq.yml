@@ -1,0 +1,26 @@
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:        "rabbitmq"
+            port:        "5672"
+            user:        "ta"
+            password:    "6omKUdBf"
+            vhost:       "/ta"
+            lazy:        true
+            connection_timeout: 60
+            read_write_timeout: 60
+            keepalive: false
+            heartbeat: 0
+    producers:
+        parse_site_consumer:
+            connection:         default
+            exchange_options:   {name: 'parse_site_consumer', type: direct}
+
+
+    consumers:
+        parse_site_consumer:
+            connection:       default
+            exchange_options: {name: 'parse_site_consumer', type: direct}
+            queue_options:    {name: 'parse_site_consumer'}
+            callback:         parse_site_consumer
+            qos_options:      {prefetch_size: 0, prefetch_count: 1, global: false}
